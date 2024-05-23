@@ -1,12 +1,6 @@
-menu = """
+from interface_grafica import *  # noqa: F403
 
-[D] Depositar
-[S] Sacar
-[E] Extrato
-[Q] Sair
-
-=> """
-
+new_window()  # noqa: F405
 saldo = 0
 limite = 500
 extrato = ""
@@ -14,57 +8,72 @@ numero_saques = 0
 LIMITE_SAQUES = 3
 
 while True:
-  opcao = input(menu).upper()
+  window, events, values = sg.read_all_windows()  # noqa: F405
 
-  if opcao == "D":
+  if events == "DEPOSITAR":
     try:
-      valor = float(input("Informe o valor do depósito: "))
-    
-      if valor > 0:
-        saldo += valor  # type: ignore
-        extrato += f"Depósito: R$ {valor:.2f}\n"
+      depositar = float(values['depositar'].replace(',', '.'))
+
+      if depositar > 0:
+        saldo += depositar  # type: ignore
+        window['saida'].update('')
+        window['depositar'].update('')
+        print(f"Depósito: R$ {depositar:.2f}\n")
+        extrato += f"Depósito: R$ {depositar:.2f}\n"
 
       else:
-        print("Operação falhou! O valor informado é inválido.")
-    except:  # noqa: E722
-      print("Algo deu errado! Só aceita números.")
+        sg.popup("Operação falhou! O valor informado é inválido.", title='Info')  # noqa: F405
 
-  elif opcao == "S":
+    except:  # noqa: E722
+      sg.popup("Algo deu errado! Verifique se está pressionando o botão correto. \
+        Só aceita números.", title='Erro')
+
+  elif events == "SACAR":
     try:
-      valor = float(input("Informe o valor do saque: "))
-      
-      excedeu_saldo = valor > saldo
-      excedeu_limite = valor > limite
+      sacar = float(values['sacar'].replace(',', '.'))
+
+      excedeu_saldo = sacar > saldo
+      excedeu_limite = sacar > limite
       excedeu_saques = numero_saques >= LIMITE_SAQUES
 
+      window['saida'].update('')
+      window['sacar'].update('')
+
       if excedeu_saldo:
-        print("Operação falhou! Você não tem saldo suficiente.")
+        sg.popup("Operação falhou! Você não tem saldo suficiente.", title='Info')  # noqa: F405
       
       elif excedeu_limite:
-        print("Operação falhou! O valor do saque excede o limite.")
+        sg.popup("Operação falhou! O valor do saque excede o limite.", title='Info')  # noqa: F405
       
       elif excedeu_saques:
-        print("Operação falhou! Número máximo de saques excedido.")
+        sg.popup("Operação falhou! Número máximo de saques excedido.", title='Info')  # noqa: F405
 
-      elif valor > 0:
-        saldo -= valor  # type: ignore
-        extrato += f"Saque: R$ {valor:.2f}\n"
+      elif sacar > 0:
+        saldo -= sacar  # type: ignore
+        print(f"Saque: R$ {sacar:.2f}\n")
+        extrato += f"Saque: R$ {sacar:.2f}\n"
         numero_saques += 1
       
       else:
-        print("Operação falhou! O valor informado é inválido.")
-    except:  # noqa: E722
-      print("Algo deu errado! Só aceita números.")
+        sg.popup("Operação falhou! O valor informado é inválido.", title='Info')  # noqa: F405
 
-  elif opcao == "E":
-    print("\n=================== EXTRATO ===================")
+    except:  # noqa: E722
+      sg.popup("Algo deu errado! Verifique se está pressionando o botão correto. \
+        Só aceita números.", title='Erro')  # noqa: F405
+
+  elif events == "EXTRATO":
+    window['saida'].update('')
+    print("\n===== EXTRATO =====")
     print("Não foram realizadas movimentações." if not extrato else extrato)
     print(f"\nSaldo: R$ {saldo:.2f}")
-    print("===============================================")
+    print("===================")
 
+  elif events == "SAIR":
+    break
 
-  elif opcao == "Q":
+  elif events == sg.WINDOW_CLOSED:  # noqa: F405
     break
 
   else:
-    print("Operação inválida, por favor selecione novamente a operação desejada.")
+    sg.popup("Operação inválida, por favor selecione novamente a operação desejada.",   # noqa: F405
+             title='Info')
