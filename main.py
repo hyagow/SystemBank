@@ -1,79 +1,109 @@
+# type: ignore
 from interface_grafica import *  # noqa: F403
+from metodos import *  # noqa: F403
 
-new_window()  # noqa: F405
-saldo = 0
-limite = 500
-extrato = ""
-numero_saques = 0
-LIMITE_SAQUES = 3
-
+login_window()  # noqa: F405
+lista_usuario = {
+  "contato1": {"nome": "hyago", "data_nasc": "12/12/1212", "CPF": "12345678910",
+               "senha": "123"}
+}
 while True:
   window, events, values = sg.read_all_windows()  # noqa: F405
-
-  if events == "DEPOSITAR":
-    try:
-      depositar = float(values['depositar'].replace(',', '.'))
-
-      if depositar > 0:
-        saldo += depositar  # type: ignore
-        window['saida'].update('')
-        window['depositar'].update('')
-        print(f"Depósito: R$ {depositar:.2f}\n")
-        extrato += f"Depósito: R$ {depositar:.2f}\n"
-
-      else:
-        sg.popup("Operação falhou! O valor informado é inválido.", title='Info')  # noqa: F405
-
-    except:  # noqa: E722
-      sg.popup("Algo deu errado! Verifique se está pressionando o botão correto. \
-        Só aceita números.", title='Erro')
-
-  elif events == "SACAR":
-    try:
-      sacar = float(values['sacar'].replace(',', '.'))
-
-      excedeu_saldo = sacar > saldo
-      excedeu_limite = sacar > limite
-      excedeu_saques = numero_saques >= LIMITE_SAQUES
-
-      window['saida'].update('')
-      window['sacar'].update('')
-
-      if excedeu_saldo:
-        sg.popup("Operação falhou! Você não tem saldo suficiente.", title='Info')  # noqa: F405
-      
-      elif excedeu_limite:
-        sg.popup("Operação falhou! O valor do saque excede o limite.", title='Info')  # noqa: F405
-      
-      elif excedeu_saques:
-        sg.popup("Operação falhou! Número máximo de saques excedido.", title='Info')  # noqa: F405
-
-      elif sacar > 0:
-        saldo -= sacar  # type: ignore
-        print(f"Saque: R$ {sacar:.2f}\n")
-        extrato += f"Saque: R$ {sacar:.2f}\n"
-        numero_saques += 1
-      
-      else:
-        sg.popup("Operação falhou! O valor informado é inválido.", title='Info')  # noqa: F405
-
-    except:  # noqa: E722
-      sg.popup("Algo deu errado! Verifique se está pressionando o botão correto. \
-        Só aceita números.", title='Erro')  # noqa: F405
-
-  elif events == "EXTRATO":
-    window['saida'].update('')
-    print("\n===== EXTRATO =====")
-    print("Não foram realizadas movimentações." if not extrato else extrato)
-    print(f"\nSaldo: R$ {saldo:.2f}")
-    print("===================")
-
-  elif events == "SAIR":
+  if events == sg.WINDOW_CLOSED:  # noqa: F405
     break
 
-  elif events == sg.WINDOW_CLOSED:  # noqa: F405
-    break
+  if events == "Fazer Login":
+    usuario = values['user'].strip()
+    senha = values['pwd'].strip()
+    if usuario == "hyagow" and senha == "123":
+      sg.popup(f"Bem vindo!\t\t{usuario}", font='Arial 19 bold',   # noqa: F405
+              auto_close=True, no_titlebar=True, button_type=5, 
+              background_color="#fff", text_color="#333")
+    else:
+      sg.popup("Algo deu errado!\n"  # noqa: F405
+              "Verifique seus dados ou crie um novo usuário", 
+              font= "Arial 13 bold", auto_close=True,no_titlebar=True, 
+              button_type=5, background_color="#fff", text_color="#333")
+    """
+    Aqui será implementado a autenticação do usuário e senha com uma conexão
+    com banco de dados.
+    """
 
-  else:
-    sg.popup("Operação inválida, por favor selecione novamente a operação desejada.",   # noqa: F405
-             title='Info')
+  if events == "Novo Usuário":
+    new_user_window()  # noqa: F405
+
+    while True:
+      window, events, values = sg.read_all_windows()  # noqa: F405
+      if events == sg.WINDOW_CLOSED:  # noqa: F405
+        window.close()
+        break
+
+      if events == "CADASTRAR":
+        nome = values["nome"].strip()
+        data_nasc = values["data_nasc"].strip()
+        cpf = values["CPF"].strip()
+        endereço = values["Endereço"].strip()
+        senha = values["senha"].strip()
+
+
+      if events == "VOLTAR":
+        window.close()
+        break
+
+# transfers_window()  # noqa: F405
+# saldo = 0
+# limite = 500
+# extrato = ""
+# numero_saques = 0
+# LIMITE_SAQUES = 3
+
+# while True:
+#   window, events, values = sg.read_all_windows()  # noqa: F405
+
+#   if events == "DEPOSITAR":
+#     try:
+#       valor_depositar = float(values['depositar'].replace(',', '.'))
+#       window['saida'].update('')
+#       window['depositar'].update('')
+#       saldo, extrato = depositar(saldo, valor_depositar, extrato)  # noqa: F405
+
+#     except:  # noqa: E722
+#       sg.popup("Algo deu errado!\n"   # noqa: F405
+#               "Verifique se está pressionando o botão correto. \
+#                Este campo só aceita números.", title='Erro')
+
+#   elif events == "SACAR":
+#     try:
+#       valor_sacar = float(values['sacar'].replace(',', '.'))
+#       window['saida'].update('')
+#       window['sacar'].update('')
+      
+#       saldo, extrato = saque(valor_sacar=valor_sacar, saldo=saldo,  # noqa: F405
+#                              limite=limite, extrato=extrato,
+#                              numero_saques=numero_saques,
+#                              limite_saques=LIMITE_SAQUES
+#                             )
+#     except:  # noqa: E722
+#       sg.popup("Algo deu errado!\n"  # noqa: F405
+#                 "Verifique se está pressionando o botão correto. \
+#                 Este campo só aceita números.", title='Erro')
+
+#   elif events == "EXTRATO":
+#     try:
+#       window['saida'].update('')
+#       exibir_extrato(saldo, extrato=extrato)  # noqa: F405
+#     except:  # noqa: E722
+#       sg.popup("Algo deu errado!\n"  # noqa: F405
+#               "Verifique se está pressionando o botão correto.", 
+#               title='Erro')
+
+#   elif events == "SAIR":
+#     break
+
+#   elif events == sg.WINDOW_CLOSED:  # noqa: F405
+#     break
+
+#   else:
+#     sg.popup("Operação inválida!\n"  # noqa: F405
+#              "Por favor selecione novamente a operação desejada.",
+#              title='Info')
