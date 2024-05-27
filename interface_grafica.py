@@ -27,11 +27,11 @@ def new_user_window():
     [sg.Text('Data de Nascimento:\t', font= 'Ubuntu 13 bold'),
      sg.Input('', size=30, font= 'Ubuntu 13 bold', key='data_nasc')],
     [sg.Text('CPF:\t\t\t', font= 'Ubuntu 13 bold'),
-     sg.Input('', size=30, font= 'Ubuntu 13 bold', key='CPF')],
+     sg.Input('', size=30, font= 'Ubuntu 13 bold', key='cpf')],
     [sg.Text('Endereço:\t\t', font= 'Ubuntu 13 bold'),
-     sg.Input('', size=30, font= 'Ubuntu 13 bold', key='Endereço')],
+     sg.Input('', size=30, font= 'Ubuntu 13 bold', key='endereço')],
     [sg.Text('Senha:\t\t\t', font= 'Ubuntu 13 bold'),
-     sg.Input('', size=30, font= 'Ubuntu 13 bold', key='Senha')],
+     sg.Input('', size=30, font= 'Ubuntu 13 bold', password_char='*', key='senha')],
     [sg.Button('CADASTRAR', font= 'Ubuntu 13 bold', size=14, pad=(70,0,0,0)),
      sg.Button('VOLTAR', font= 'Ubuntu 13 bold', size=14, pad=(0,0,0,0))]
   ]
@@ -48,18 +48,15 @@ def transfers_window():
   sg.theme('DarkBlue4')
 
   col1 = [
-    [sg.Text('DEPOSITAR: ', font= 'Ubuntu 13 bold'), 
+    [sg.Text('DEPOSITAR:\t', font= 'Ubuntu 13 bold'), 
      sg.Input('', size=20, font= 'Ubuntu 13', key='depositar'), 
      sg.Button('DEPOSITAR', font= 'Ubuntu 13', size=11)],
-    [sg.Text('SACAR: ', font= 'Ubuntu 13 bold'), 
-     sg.Text(' '*5, font= 'Ubuntu 13'), 
+    [sg.Text('SACAR:\t\t', font= 'Ubuntu 13 bold'), 
      sg.Input('', size=20, font= 'Ubuntu 13', key='sacar'), 
      sg.Button('SACAR', font= 'Ubuntu 13', size=11)],
-    [sg.Text('EXTRATO: ', font= 'Ubuntu 13 bold'), 
-     sg.Text(' '*39, font= 'Ubuntu 13'), 
+    [sg.Text('EXTRATO:\t', font= 'Ubuntu 13 bold'), 
      sg.Button('EXTRATO', font= 'Ubuntu 13', size=11)],
-    [sg.Text('SAIR: ', font= 'Ubuntu 13 bold'), 
-     sg.Text(' '*47, font= 'Ubuntu 13'), 
+    [sg.Text('SAIR:\t\t', font= 'Ubuntu 13 bold'), 
      sg.Button('SAIR', font= 'Ubuntu 13', size=11)]
   ]
   
