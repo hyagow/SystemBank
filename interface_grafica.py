@@ -6,8 +6,10 @@ def login_window():
     [sg.Text('Usuário:\t\t', font= 'Ubuntu 13 bold'),
      sg.Input('', size=20, font= 'Ubuntu 13 bold', key='user')],
     [sg.Text('Senha:\t\t', font= 'Ubuntu 13 bold'),
-     sg.Input('', size=20, font= 'Ubuntu 13 bold', key='pwd', password_char='*')],
-    [sg.Button('Fazer Login', size=15, font= 'Ubuntu 12 bold', pad=(20,0,0,0), button_color='Yellow'),
+     sg.Input('', size=20, font= 'Ubuntu 13 bold', key='pwd', 
+              password_char='*')],
+    [sg.Button('Fazer Login', size=15, font= 'Ubuntu 12 bold', pad=(20,0,0,0), 
+               button_color='Yellow'),
      sg.Button('Novo Usuário', size=15, font= 'Ubuntu 12 bold', pad=(20,0,0,0))]
   ]
 
@@ -15,8 +17,8 @@ def login_window():
     [sg.Column(coluna1)]
   ]
 
-  return sg.Window('Login System Bank', layout=layout, 
-                   finalize=True, resizable=False)
+  return sg.Window('Login System Bank', layout=layout, finalize=True, 
+                   resizable=False)
 
 
 def new_user_window():
@@ -29,9 +31,10 @@ def new_user_window():
     [sg.Text('CPF:\t\t\t', font= 'Ubuntu 13 bold'),
      sg.Input('', size=30, font= 'Ubuntu 13 bold', key='cpf')],
     [sg.Text('Endereço:\t\t', font= 'Ubuntu 13 bold'),
-     sg.Input('', size=30, font= 'Ubuntu 13 bold', key='endereço')],
+     sg.Input('', size=30, font= 'Ubuntu 13 bold', key='endereco')],
     [sg.Text('Senha:\t\t\t', font= 'Ubuntu 13 bold'),
-     sg.Input('', size=30, font= 'Ubuntu 13 bold', password_char='*', key='senha')],
+     sg.Input('', size=30, font= 'Ubuntu 13 bold', password_char='*', 
+              key='senha')],
     [sg.Button('CADASTRAR', font= 'Ubuntu 13 bold', size=14, pad=(70,0,0,0)),
      sg.Button('VOLTAR', font= 'Ubuntu 13 bold', size=14, pad=(0,0,0,0))]
   ]

@@ -1,7 +1,10 @@
 # type: ignore
+# Importando métodos das funcionalidades da interface gráfica
 from interface_grafica import *  # noqa: F403
 from metodos import *  # noqa: F403
 
+
+# Tela de inicialização do programa (Tela de Login)
 login_window()  # noqa: F405
 lista_usuario = {
   # Neste dicionário será inserido os dados cadastrais dos usuários
@@ -20,6 +23,8 @@ while True:
               background_color="#fff", text_color="#333")
       window.close()
       transfers_window()  # noqa: F405
+
+      # Variáveis para aproveitamento em funções da transação.
       saldo = 0
       limite = 500
       extrato = ""
@@ -93,20 +98,30 @@ while True:
         break
 
       if events == "CADASTRAR":
+        # Limpando as informações inseridas na tela
+        window["nome"].update('')
+        window["data_nasc"].update('')
+        window["cpf"].update('')
+        window["endereco"].update('')
+        window["senha"].update('')
+
+        # Limpando os espaços da direita e da esquerda dos campos de inserção
         nome = values["nome"].strip()
         data_nasc = values["data_nasc"].strip()
         cpf = values["cpf"].strip()
-        endereço = values["endereço"].strip()
+        endereco = values["endereco"].strip()
         senha = values["senha"].strip()
 
+        # Variáveis de requisitos
         caracteres_minimos = 8
         requisito_cpf = 11
 
+        # Estruturas condicionais para efetivar cadastro
         if nome and str(nome) \
           and data_nasc and len(data_nasc) == caracteres_minimos \
-          and len(cpf) == requisito_cpf and int(cpf) and cpf and endereço \
-          and senha:
-          sg.popup(f'{nome}, {data_nasc}, {cpf}, {endereço}.')  # noqa: F405
+          and len(cpf) == requisito_cpf and int(cpf) and cpf and endereco \
+          and senha and len(senha) >= caracteres_minimos:
+          criar_usuario(nome, data_nasc, cpf, endereco, senha)  # noqa: F405
         else:
           sg.popup('Preencha todos os campos!\n'\
                    'Verifique se os campos atendem aos requisitos:\n'\
@@ -115,7 +130,7 @@ while True:
                    'CPF: -----------------> [Números[Quantidade: 11]]\n'\
                    'Senha: --------------> [Mínimo: 8 dígitos]',  # noqa: F405
                    font='Ubuntu 13 bold', auto_close=True, no_titlebar=True, 
-                   auto_close_duration=15, button_type=5, 
+                   auto_close_duration=10, button_type=5, 
                    background_color="#fff", text_color="#333")
 
 
