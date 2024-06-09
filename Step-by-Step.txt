@@ -1,0 +1,16 @@
+Inserir os usuários que forem cadastrados;
+-> Produção;
+
+1º - Passar nos parâmetros do método as informações dos usuários para serem inseridas no banco de dados. (checked)
+
+2º - O método irá acessar a tabela dentro do banco de dados e identificar a coluna a ser alocado a informação fornecida. (checked)
+
+3º - Checar se a funcionalidade atende a requisição.
+ - Nesta etapa foi construido um verificador, porém bem simples não abrangendo a totalidade da autenticidade,
+ entretanto, a tabela é criada, 
+ mas os dados inseridos não estão sendo alocados na tabela de forma nenhuma. (is here)
+ [verificar este ponto para trazer a solução deste problema.]
+
+Listar os usuários que estão cadastrados;
+Inserir as contas que forem cadastradas vinculada a cada usuário;
+Listar as contas que estão cadastradas.

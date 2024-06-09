@@ -4,11 +4,11 @@ from interface_grafica import *  # noqa: F403
 from metodos import *  # noqa: F403
 
 
+# Criação do banco de dados e da tabela padrão
+create_mydb_and_table_defaults()  # noqa: F405
+
 # Tela de inicialização do programa (Tela de Login)
 login_window()  # noqa: F405
-lista_usuario = {
-  # Neste dicionário será inserido os dados cadastrais dos usuários
-}
 while True:
   window, events, values = sg.read_all_windows()  # noqa: F405
   if events == sg.WINDOW_CLOSED:  # noqa: F405
@@ -24,12 +24,15 @@ while True:
       window.close()
       transfers_window()  # noqa: F405
 
-      # Variáveis para aproveitamento em funções da transação.
+      # Variáveis para aproveitamento nas funções de transação.
+      AGENCIA = "0001"
+      LIMITE_SAQUES = 3
+      
       saldo = 0
       limite = 500
       extrato = ""
       numero_saques = 0
-      LIMITE_SAQUES = 3
+      contas = []
 
       while True:
         window, events, values = sg.read_all_windows()  # noqa: F405
@@ -44,7 +47,9 @@ while True:
           except:  # noqa: E722
             sg.popup("Algo deu errado!\n"   # noqa: F405
                     "Verifique se está pressionando o botão correto. \
-                    Este campo só aceita números.", title='Erro')
+                    Este campo só aceita números.", font= "Arial 13 bold", 
+                    auto_close=True, no_titlebar=True, button_type=5, 
+                    background_color="#fff", text_color="#333")
 
         elif events == "SACAR":
           try:
@@ -55,8 +60,8 @@ while True:
             saldo, extrato = saque(valor_sacar=valor_sacar, saldo=saldo,  # noqa: F405
                                   limite=limite, extrato=extrato,
                                   numero_saques=numero_saques,
-                                  limite_saques=LIMITE_SAQUES
-                                  )
+                                  limite_saques=LIMITE_SAQUES)
+            
           except:  # noqa: E722
             sg.popup("Algo deu errado!\n"  # noqa: F405
                       "Verifique se está pressionando o botão correto. \
@@ -69,19 +74,19 @@ while True:
           except:  # noqa: E722
             sg.popup("Algo deu errado!\n"  # noqa: F405
                     "Verifique se está pressionando o botão correto.", 
-                    title='Erro')
+                    font= "Arial 13 bold", auto_close=True, no_titlebar=True, 
+                    button_type=5, background_color="#fff", text_color="#333")
 
-        elif events == "SAIR":
+        elif events == sg.WINDOW_CLOSED or "SAIR":  # noqa: F405
+          login_window() # noqa: F405
           window.close()
-          break
-
-        elif events == sg.WINDOW_CLOSED:  # noqa: F405
           break
 
         else:
           sg.popup("Operação inválida!\n"  # noqa: F405
                   "Por favor selecione novamente a operação desejada.",
-                  title='Info')
+                  font= "Arial 13 bold", auto_close=True, no_titlebar=True, 
+                  button_type=5, background_color="#fff", text_color="#333")
     else:
       sg.popup("Algo deu errado!\n"  # noqa: F405
               "Verifique seus dados ou crie um novo usuário", 
@@ -90,50 +95,39 @@ while True:
 
   if events == "Novo Usuário":
     new_user_window()  # noqa: F405
+    window.close()
 
     while True:
       window, events, values = sg.read_all_windows()  # noqa: F405
-      if events == sg.WINDOW_CLOSED:  # noqa: F405
-        window.close()
-        break
+
 
       if events == "CADASTRAR":
         # Limpando as informações inseridas na tela
         window["nome"].update('')
-        window["data_nasc"].update('')
+        window["dia"].update('')
+        window["mes"].update('')
+        window["ano"].update('')
         window["cpf"].update('')
         window["endereco"].update('')
         window["senha"].update('')
+        window["nome"].set_focus()
 
-        # Limpando os espaços da direita e da esquerda dos campos de inserção
+        # Limpando os espaços vazios da direita e da esquerda dos 
+        # campos de inserção
         nome = values["nome"].strip()
-        data_nasc = values["data_nasc"].strip()
+        dia = values["dia"].strip()
+        mes = values["mes"].strip()
+        ano = values["ano"].strip()
         cpf = values["cpf"].strip()
         endereco = values["endereco"].strip()
         senha = values["senha"].strip()
 
-        # Variáveis de requisitos
-        caracteres_minimos = 8
-        requisito_cpf = 11
+        # Função para cadastrar novos usuários
+        inserir_usuario(nome, dia, mes, ano, cpf, endereco, senha)  # noqa: F405
 
-        # Estruturas condicionais para efetivar cadastro
-        if nome and str(nome) \
-          and data_nasc and len(data_nasc) == caracteres_minimos \
-          and len(cpf) == requisito_cpf and int(cpf) and cpf and endereco \
-          and senha and len(senha) >= caracteres_minimos:
-          criar_usuario(nome, data_nasc, cpf, endereco, senha)  # noqa: F405
-        else:
-          sg.popup('Preencha todos os campos!\n'\
-                   'Verifique se os campos atendem aos requisitos:\n'\
-                   'Nome: ---------------> [Letras]\n'\
-                   'Data Nascimento: -> [Números[Quantidade: 8]]\n'\
-                   'CPF: -----------------> [Números[Quantidade: 11]]\n'\
-                   'Senha: --------------> [Mínimo: 8 dígitos]',  # noqa: F405
-                   font='Ubuntu 13 bold', auto_close=True, no_titlebar=True, 
-                   auto_close_duration=10, button_type=5, 
-                   background_color="#fff", text_color="#333")
-
-
-      if events == "VOLTAR":
+      # Eventos para retornar a interface anterior
+      elif events == sg.WINDOW_CLOSED or "VOLTAR":  # noqa: F405
+        login_window()  # noqa: F405
         window.close()
         break
+      
