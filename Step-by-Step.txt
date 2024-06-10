@@ -16,8 +16,8 @@ Inserir os usuários que forem cadastrados;
 
  -> Status: Concluído.
 _______________________________________________________________________________
-Problema com método sacar, pois não está limitando os saques;
- - o problema se encontra no contador, pois o mesmo não entra na contagem, pois 
+Problema com método sacar: não está limitando os saques;
+ - o problema se encontra no contador: o mesmo não entra na contagem, 
  quando passa pela função ela reseta, ficando sempre em 1 e não passando disso;
  penso em deixar o código padronizado em um só arquivo estruturado da 
  seguinte maneira:

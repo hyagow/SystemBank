@@ -3,13 +3,11 @@ from interface_grafica import *  # noqa: F403
 import mysql.connector
 from datetime import datetime  # noqa: F401
 
-
 # Conectando ao banco de dados MySQL
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="123123123",
-    database="myfirstdb"
+    password="123123123"
 )
 cursor = mydb.cursor()
 cursor.execute(
@@ -39,7 +37,7 @@ def depositar(saldo, valor_depositar, extrato, /):
   return saldo, extrato
 
 # Definição do método de Transação: Sacar
-def saque(*, valor_sacar, saldo, limite, extrato, numero_saques, limite_saques):
+def saque(*, saldo, valor_sacar, extrato, limite, numero_saques, limite_saques):
   excedeu_saldo = valor_sacar > saldo
   excedeu_limite = valor_sacar > limite
   excedeu_saques = numero_saques > limite_saques
@@ -78,17 +76,6 @@ def exibir_extrato(saldo, /, *, extrato):
   print("Não foram realizadas movimentações." if not extrato else extrato)
   print(f"\nSaldo: R$ {saldo:.2f}")
   print("=============================")
-
-"""# Definição do método de Gerenciamento: Criação de Usuário
-  
-          # sg.popup(f"USUÁRIO CADASTRADO:\n\n"  # noqa: F405
-          #         f"Usuário: {usuarios['cliente_nome']},\n"
-          #         f"Data de Nascimento: {usuarios['cliente_data_nasc']},\n"
-          #         f"CPF: {usuarios['cliente_cpf']},\n"
-          #         f"Endereço: {usuarios['cliente_endereco']},\n"
-          #         f"Senha: {usuarios['senha']}", font='Ubuntu 13 bold', 
-          #         no_titlebar=True, button_type=5, background_color='White', 
-          #         text_color='Black', auto_close=10)"""
 
 # Definição do método de Gerenciamento: Criar Conta
 def criar_conta(agencia, numero_conta, usuarios):
