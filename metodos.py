@@ -8,7 +8,7 @@ from datetime import datetime  # noqa: F401
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="hsfHS2019@",
+    password="123123123",
     database="myfirstdb"
 )
 cursor = mydb.cursor()
