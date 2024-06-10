@@ -22,10 +22,13 @@ Problema com método sacar, pois não está limitando os saques;
  penso em deixar o código padronizado em um só arquivo estruturado da 
  seguinte maneira:
  importação > banco de dados > interface gráfica > variáveis > métodos > main
- porém insisto em tentar resolver o código na estrutura atual.
+ porém insisto em tentar resolver o código na estrutura atual. (in progress)
+
+ -> Status: Em andamento.
 _______________________________________________________________________________
 Listar os usuários que estão cadastrados;
- - Criei uma função de listar clientes. (in progress)
+ - Criei uma função de listar clientes. (checked)
+ -> Status: Concluído.
 _______________________________________________________________________________
 Inserir as contas que forem cadastradas vinculada a cada usuário;
  - 
