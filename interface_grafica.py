@@ -1,5 +1,6 @@
-import PySimpleGUI as sg  # type: ignore
+from PySimpleGUI import PySimpleGUI as sg  # type: ignore
 
+# Criando janela de login
 def login_window():
   sg.theme('DarkBlack')
   coluna1 = [
@@ -10,7 +11,9 @@ def login_window():
               password_char='*')],
     [sg.Button('Fazer Login', size=15, font= 'Ubuntu 12 bold', pad=(20,0,0,0), 
                button_color='Yellow'),
-     sg.Button('Novo Usuário', size=15, font= 'Ubuntu 12 bold', pad=(20,0,0,0))]
+     sg.Button('Novo Usuário', size=15, font= 'Ubuntu 12 bold', pad=(20,0,0,0)),
+     sg.Button('LISTAR USUÁRIOS', size=15, 
+               font= 'Ubuntu 12 bold', pad=(20,0,0,0), button_color='#8cbfe6')]
   ]
 
   layout = [
@@ -21,6 +24,7 @@ def login_window():
                    resizable=False)
 
 
+# Criando janela de novos usuários
 def new_user_window():
   sg.theme('DarkBlack')
   col_principal = [
@@ -49,6 +53,7 @@ def new_user_window():
                    resizable=False)
 
 
+# Criando janela de transações
 def transfers_window():
   sg.theme('DarkBlue4')
 
@@ -75,3 +80,22 @@ def transfers_window():
   ]
 
   return sg.Window('SYSTEM BANK', layout=layout, finalize=True, resizable=False)
+
+
+def list_of_users():
+  sg.theme('DarkBlue4')
+  col1 = [
+    
+  ]
+
+  col_out = [
+    [sg.Output(background_color= 'White', size=(40, 10), font= 'Ubuntu 14 bold', 
+               text_color= 'blue', key= 'saida')],
+    [sg.Button('ATUALIZAR', font= 'Ubuntu 13', size=11)],
+    [sg.Button('VOLTAR', font= 'Ubuntu 13', size=11)]
+  ]
+
+  layout = [
+    [sg.Column(col1), sg.Column(col_out)]
+  ]
+  return sg.Window('LIST OF USER SYSTEM BANK', layout=layout, finalize=True)

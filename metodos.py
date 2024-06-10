@@ -2,16 +2,29 @@
 from interface_grafica import *  # noqa: F403
 import mysql.connector
 from datetime import datetime  # noqa: F401
-# from main import * # noqa: F403
+
 
 # Conectando ao banco de dados MySQL
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="hsfHS2019@",
-    database="myfirstdb"
+    password="123123123"
+    # database="myfirstdb"
 )
 cursor = mydb.cursor()
+cursor.execute(
+    'CREATE DATABASE IF NOT EXISTS myfirstdb \
+      default character set utf8mb4 default collate utf8mb4_general_ci'
+    )
+cursor.execute(
+  'USE myfirstdb'
+)
+cursor.execute(
+  'CREATE TABLE IF NOT EXISTS usuarios(nome varchar(30) not null, \
+        dia varchar(2) not null, mes varchar(2) not null, \
+        ano varchar(4) not null, cpf varchar(11) not null, \
+        endereco varchar(30), senha varchar(64)) default charset = utf8mb4'
+)
 
 # Definição do método de Transação: Depositar
 def depositar(saldo, valor_depositar, extrato, /):
@@ -29,25 +42,33 @@ def depositar(saldo, valor_depositar, extrato, /):
 def saque(*, valor_sacar, saldo, limite, extrato, numero_saques, limite_saques):
   excedeu_saldo = valor_sacar > saldo
   excedeu_limite = valor_sacar > limite
-  excedeu_saques = numero_saques >= limite_saques
+  excedeu_saques = numero_saques > limite_saques
 
   if excedeu_saldo:
-    sg.popup("Operação falhou! Você não tem saldo suficiente.", title='Info')  # noqa: F405
+    sg.popup("Operação falhou! Você não tem saldo suficiente.",  # noqa: F405
+             no_titlebar=True, auto_close=True, button_type=5, 
+             font='Ubuntu 11 bold')
   
   elif excedeu_limite:
-    sg.popup("Operação falhou! O valor do saque excede o limite.", title='Info')  # noqa: F405
+    sg.popup("Operação falhou! O valor do saque excede o limite.",  # noqa: F405
+             no_titlebar=True, auto_close=True, button_type=5, 
+             font='Ubuntu 11 bold')
   
   elif excedeu_saques:
-    sg.popup("Operação falhou! Número máximo de saques excedido.", title='Info')  # noqa: F405
-
+    sg.popup("Operação falhou! Número máximo de saques excedido.",  # noqa: F405
+             no_titlebar=True, auto_close=True, button_type=5, 
+             font='Ubuntu 11 bold')
+    
   elif valor_sacar > 0:
     saldo -= valor_sacar
-    print(f"Saque:\t\tR$ {valor_sacar:.2f}\n")
+    print(f"Saque realizado:\t\tR$ {valor_sacar:.2f}\n")
     extrato += f"Saque:\t\tR$ {valor_sacar:.2f}\n"
-    numero_saques += 1 
+    numero_saques += 1
 
   else:
-    sg.popup("Operação falhou! O valor informado é inválido.", title='Info')  # noqa: F405
+    sg.popup("Operação falhou! O valor informado é inválido.",  # noqa: F405
+             no_titlebar=True, auto_close=True, button_type=5, 
+             font= 'Ubuntu 11 bold')
 
   return saldo, extrato
 
@@ -58,7 +79,7 @@ def exibir_extrato(saldo, /, *, extrato):
   print(f"\nSaldo: R$ {saldo:.2f}")
   print("=============================")
 
-# Definição do método de Gerenciamento: Criação de Usuário
+"""# Definição do método de Gerenciamento: Criação de Usuário
   
           # sg.popup(f"USUÁRIO CADASTRADO:\n\n"  # noqa: F405
           #         f"Usuário: {usuarios['cliente_nome']},\n"
@@ -67,7 +88,7 @@ def exibir_extrato(saldo, /, *, extrato):
           #         f"Endereço: {usuarios['cliente_endereco']},\n"
           #         f"Senha: {usuarios['senha']}", font='Ubuntu 13 bold', 
           #         no_titlebar=True, button_type=5, background_color='White', 
-          #         text_color='Black', auto_close=10)
+          #         text_color='Black', auto_close=10)"""
 
 # Definição do método de Gerenciamento: Criar Conta
 def criar_conta(agencia, numero_conta, usuarios):
@@ -77,19 +98,12 @@ def criar_conta(agencia, numero_conta, usuarios):
 def listar_conta(contas):
   pass
 
-#FIXME: Deletar caso não haja necessidade futura
-def create_mydb_and_table_defaults():
-  cursor.execute(
-    'CREATE DATABASE IF NOT EXISTS myfirstdb \
-      default character set utf8mb4 default collate utf8mb4_general_ci'
-    )
-  cursor.execute(
-    'CREATE TABLE IF NOT EXISTS usuarios(nome varchar(30) not null, \
-        dia varchar(2) not null, mes varchar(2) not null, \
-        ano varchar(4) not null, cpf varchar(11) not null, \
-        endereco varchar(30), senha varchar(64)) default charset = utf8mb4'
-    )
-  
+# Criação do método de Armazenamento: Banco de dados e Tabela
+# def create_mydb_and_table_defaults():
+#   cursor.execute(
+    
+#     )
+#   mydb.commit()
 
 def inserir_usuario(nome, dia, mes, ano, cpf, endereco, senha):
   try:
@@ -113,7 +127,7 @@ def inserir_usuario(nome, dia, mes, ano, cpf, endereco, senha):
       and len(mes) == requisito_char_dia_mes \
       and len(ano) == requisito_char_ano \
       and len(cpf) == requisito_char_cpf:
-
+      cursor.execute('USE myfirstdb')
       cursor.execute(
         "INSERT INTO usuarios (nome, dia, mes, ano, cpf, endereco, senha) \
           VALUES (%s, %s, %s, %s, %s, %s, %s)", \
@@ -138,8 +152,20 @@ def inserir_usuario(nome, dia, mes, ano, cpf, endereco, senha):
     print(e)
   
 #TODO: Verificação se existe o usuario e o cpf dentro do banco de dados.
-def filtrar_usuario(cpf: int, usuarios):
-  usuarios_filtrados = [usuario for usuario 
-                        in usuarios if usuario["cpf"] == cpf]
-  # print(usuarios["cpf"] == cpf)  # noqa: F405
-  return usuarios_filtrados[0] if usuarios_filtrados else None
+#FIXME: Onde será chamada? Login? Por quem? ADMIN?
+def listar_usuarios():
+  try:
+    cursor.execute("USE myfirstdb")
+    cursor.execute("SELECT * FROM usuarios")
+    usuarios = cursor.fetchall()
+    for u in usuarios:
+      script = f"********************************************\n\
+Usuário:\t\t      Data de Nascimento:\n\
+{u[0]}\t\t         {u[1]}/{u[2]}/{u[3]}\n\n\
+CPF:\n{u[4]}\n\n\
+Endereço:\n{u[5]}\n\n\
+Senha:\n{u[6]}\n\n"
+      print(script)
+    # print(usuarios)  # noqa: F405
+  except mysql.connector.Error as e:
+    print(e)

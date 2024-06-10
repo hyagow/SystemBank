@@ -1,16 +1,38 @@
+:::Step By Step:::
+_______________________________________________________________________________
 Inserir os usuários que forem cadastrados;
--> Produção;
 
-1º - Passar nos parâmetros do método as informações dos usuários para serem inseridas no banco de dados. (checked)
+ 1º - Passo
+ - Passar nos parâmetros do método as informações dos usuários para serem inseridas no banco de dados. (checked)
 
-2º - O método irá acessar a tabela dentro do banco de dados e identificar a coluna a ser alocado a informação fornecida. (checked)
+ 2º - Passo
+ - O método irá acessar a tabela dentro do banco de dados e identificar a coluna a ser alocado a informação fornecida. (checked)
 
-3º - Checar se a funcionalidade atende a requisição.
+ 3º - Passo
  - Nesta etapa foi construido um verificador, porém bem simples não abrangendo a totalidade da autenticidade,
- entretanto, a tabela é criada, 
- mas os dados inseridos não estão sendo alocados na tabela de forma nenhuma. (is here)
- [verificar este ponto para trazer a solução deste problema.]
+ entretanto, a tabela é criada, (resolved)
+ mas os dados inseridos não estão sendo alocados na tabela de forma nenhuma. (resolved)
+ [verificar este ponto para trazer a solução deste problema.] (resolved)
 
+ -> Status: Concluído.
+_______________________________________________________________________________
+Problema com método sacar, pois não está limitando os saques;
+ - o problema se encontra no contador, pois o mesmo não entra na contagem, pois 
+ quando passa pela função ela reseta, ficando sempre em 1 e não passando disso;
+ penso em deixar o código padronizado em um só arquivo estruturado da 
+ seguinte maneira:
+ importação > banco de dados > interface gráfica > variáveis > métodos > main
+ porém insisto em tentar resolver o código na estrutura atual.
+_______________________________________________________________________________
 Listar os usuários que estão cadastrados;
+ - Criei uma função de listar clientes. (in progress)
+_______________________________________________________________________________
 Inserir as contas que forem cadastradas vinculada a cada usuário;
-Listar as contas que estão cadastradas.
+ - 
+_______________________________________________________________________________
+Listar as contas que estão cadastradas;
+ - 
+_______________________________________________________________________________
+Limitar acesso ao sistema com cada usuário cadastrado no banco de dados;
+ - 
+_______________________________________________________________________________
