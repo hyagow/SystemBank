@@ -94,7 +94,8 @@ def list_of_users():
   col_out = [
     [sg.Output(background_color= 'White', size=(40, 10), font= 'Ubuntu 14 bold', 
                text_color= 'blue', key= 'saida_lista_usuarios')],
-    [sg.Button('ATUALIZAR', font= 'Ubuntu 13 bold', size=11, pad=(60,0,0,0)),
+    [sg.Button('USUÁRIOS', font= 'Ubuntu 13 bold', size=11, pad=(20,0,0,0)),
+     sg.Button('CONTAS', font= 'Ubuntu 13 bold', size=11, pad=(20,0,0,0)),
      sg.Button('VOLTAR', font= 'Ubuntu 13 bold', size=11, pad=(20,0,0,0))]
   ]
 

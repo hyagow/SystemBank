@@ -10,7 +10,8 @@ while True:
   window, events, values = sg.read_all_windows()  # noqa: F405
   if events == sg.WINDOW_CLOSED:  # noqa: F405
     break
-
+  
+  # Janela de transações
   elif events == "SYSTEM TRANSFERS":
     # Tela de Login
     login_window()  # noqa: F405
@@ -25,9 +26,9 @@ while True:
         usuario = values['user'].strip()
         senha = values['pwd'].strip()
         if usuario == "q" and senha == "q":
-          sg.popup(f"Bem vindo!\n\t{usuario}", font='Ubuntu 13 bold',   # noqa: F405
-                  auto_close=True, no_titlebar=True, button_type=5, 
-                  background_color="#fff", text_color="#333")
+          sg.popup(f"Bem vindo!\n\t{usuario}",  # noqa: F405
+                   font='Ubuntu 13 bold', auto_close=True, no_titlebar=True, 
+                   button_type=5, background_color="#fff", text_color="#333")
           
           # Janela para realizar as transações bancária do usuário
           transfers_window()  # noqa: F405
@@ -41,7 +42,7 @@ while True:
           limite = 500
           extrato = ""
           numero_saques = 0
-          contas = []      
+          contas = []   
 
           # Laço de eventos da janela de transações
           while True:
@@ -76,7 +77,9 @@ while True:
                                        limite=limite, extrato=extrato, 
                                        numero_saques=numero_saques, 
                                        limite_saques=LIMITE_SAQUES)
-              except:  # noqa: E722
+                numero_saques += 1
+              except Exception as e:  # noqa: E722
+                print(e)
                 sg.popup("Algo deu errado!\n"  # noqa: F405
                           "Verifique se está pressionando o botão correto. \
                           Este campo só aceita números.", 
@@ -159,12 +162,19 @@ while True:
         while True:
           window, events, values = sg.read_all_windows()  # noqa: F405
 
-          if events == "ATUALIZAR":
+          if events == "USUÁRIOS":
             try:
               window['saida_lista_usuarios'].update('')
               listar_usuarios()  # noqa: F405
-            except Exception as e:
-              print(e)
+            except Exception as erro:
+              print(erro)
+
+          elif events == "CONTAS":
+            try:
+              window['saida_lista_usuarios'].update('')
+              listar_contas()  # noqa: F405
+            except Exception as erro:
+              print(erro)
 
         # Eventos para retornar a interface de cadastro de usuarios
           elif events == sg.WINDOW_CLOSED or "VOLTAR":  # noqa: F405
@@ -172,10 +182,15 @@ while True:
             window.close()
             break
 
+
       # Chamando janela de gerar conta bancária
       elif events == "GERAR CONTA":
         gerator_of_account_bank()  # noqa: F405
         window.close()
+
+        AGENCIA = "0001"
+        numero_conta = 0
+        # contas = []
 
         # Laço de eventos da janela de gerar conta bancária
         while True:
@@ -183,24 +198,18 @@ while True:
           cpf_account = values["cpf_account"]
 
           if events == "GERAR":
-            try:
-              if cpf_account and int(cpf_account):
-                sg.popup('Conta gerada para:', cpf_account,  # noqa: F405
-                         no_titlebar=True, button_type=5, auto_close=True,
-                         font='Ubuntu 11')
-              else:
-                sg.popup('CPF inválido ou campo em branco',  # noqa: F405
-                         no_titlebar=True, button_type=5, auto_close=True, 
-                         font='Ubuntu 11')
-            except:  # noqa: E722
-              sg.popup('CPF inválido ou campo em branco',   # noqa: F405
-                       no_titlebar=True, button_type=5, auto_close=True, 
-                       font='Ubuntu 11')
-              
+              try:
+                numero_conta += 1
+                criar_conta(AGENCIA, numero_conta, cpf_account)  # noqa: F405
+              except Exception as erro:
+                print(erro)
+                
           elif events == sg.WINDOW_CLOSED:  # noqa: F405
             new_user_window()  # noqa: F405
             window.close()
             break
+
+          
       # Eventos para retornar a interface de inicialização
       elif events == sg.WINDOW_CLOSED or "VOLTAR":  # noqa: F405
         initial_window()  # noqa: F405

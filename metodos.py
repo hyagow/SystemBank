@@ -21,7 +21,8 @@ cursor.execute(
   'CREATE TABLE IF NOT EXISTS usuarios(nome varchar(30) not null, \
         dia varchar(2) not null, mes varchar(2) not null, \
         ano varchar(4) not null, cpf varchar(11) not null, \
-        endereco varchar(30), senha varchar(64)) default charset = utf8mb4'
+        endereco varchar(30), senha varchar(64), contas int not null auto_increment, \
+        primary key(contas)) default charset = utf8mb4'
 )
 
 # Definição do método de Transação: Depositar
@@ -38,35 +39,40 @@ def depositar(saldo, valor_depositar, extrato, /):
 
 # Definição do método de Transação: Sacar
 def saque(*, saldo, valor_sacar, extrato, limite, numero_saques, limite_saques):
-  excedeu_saldo = valor_sacar > saldo
-  excedeu_limite = valor_sacar > limite
-  excedeu_saques = numero_saques > limite_saques
+  try:
+    excedeu_saldo = valor_sacar > saldo
+    excedeu_limite = valor_sacar > limite
+    excedeu_saques = numero_saques >= limite_saques
 
-  if excedeu_saldo:
-    sg.popup("Operação falhou! Você não tem saldo suficiente.",  # noqa: F405
-             no_titlebar=True, auto_close=True, button_type=5, 
-             font='Ubuntu 11 bold')
-  
-  elif excedeu_limite:
-    sg.popup("Operação falhou! O valor do saque excede o limite.",  # noqa: F405
-             no_titlebar=True, auto_close=True, button_type=5, 
-             font='Ubuntu 11 bold')
-  
-  elif excedeu_saques:
-    sg.popup("Operação falhou! Número máximo de saques excedido.",  # noqa: F405
-             no_titlebar=True, auto_close=True, button_type=5, 
-             font='Ubuntu 11 bold')
+    if excedeu_saldo:
+      sg.popup("Operação falhou! Você não tem saldo suficiente.",  # noqa: F405
+              no_titlebar=True, auto_close=True, button_type=5, 
+              font='Ubuntu 11 bold')
     
-  elif valor_sacar > 0:
-    saldo -= valor_sacar
-    print(f"Saque realizado:\t\tR$ {valor_sacar:.2f}\n")
-    extrato += f"Saque:\t\tR$ {valor_sacar:.2f}\n"
-    numero_saques += 1
+    elif excedeu_limite:
+      sg.popup("Operação falhou! O valor do saque excede o limite.",  # noqa: F405
+              no_titlebar=True, auto_close=True, button_type=5, 
+              font='Ubuntu 11 bold')
+    
+    elif excedeu_saques:
+      sg.popup("Operação falhou! Número máximo de saques excedido.",  # noqa: F405
+              no_titlebar=True, auto_close=True, button_type=5, 
+              font='Ubuntu 11 bold')
+      
+    elif valor_sacar > 0:
+      try:
+        saldo -= valor_sacar
+        print(f"Saque realizado:\t\tR$ {valor_sacar:.2f}\n")
+        extrato += f"Saque:\t\tR$ {valor_sacar:.2f}\n"
 
-  else:
+      except Exception as erro:
+        print(erro)
+
+  except Exception as erro:
+    print(erro)
     sg.popup("Operação falhou! O valor informado é inválido.",  # noqa: F405
-             no_titlebar=True, auto_close=True, button_type=5, 
-             font= 'Ubuntu 11 bold')
+            no_titlebar=True, auto_close=True, button_type=5, 
+            font= 'Ubuntu 11 bold')
 
   return saldo, extrato
 
@@ -78,20 +84,62 @@ def exibir_extrato(saldo, /, *, extrato):
   print("=============================")
 
 # Definição do método de Gerenciamento: Criar Conta
-def criar_conta(agencia, numero_conta, usuarios):
-  pass
+def criar_conta(agencia, numero_conta, cpf_account):
+  try:
+    if cpf_account and int(cpf_account):
+      cursor.execute("select * from usuarios")
+      dados = cursor.fetchall()
+      for dado in dados:
+        if dado[4] == cpf_account:
+          try:
+            print(dado[4])
+            cursor.execute("use myfirstdb")
+            cursor.execute(
+              "create table if not exists contas (agencia varchar(4),\
+              numero_conta int auto_increment,\
+                  cpf_account varchar(12),\
+                  primary key(numero_conta)) default charset = utf8mb4"
+              )
+            cursor.execute(
+              "insert into contas values (%s, %s, %s)",
+              (agencia, numero_conta, cpf_account))
+            mydb.commit()
+            sg.popup("Conta criada com sucesso:", agencia,  # noqa: F405
+                     numero_conta, cpf_account)
+          except Exception as erro:
+            sg.popup('Ocorreu o seguinte erro:', erro,  # noqa: F405
+                     no_titlebar=True, button_type=5, auto_close=True, 
+                     font='Ubuntu 11')
+      else:
+        sg.popup('CPF não cadastrado, verifique novamente.',  # noqa: F405
+                no_titlebar=True, button_type=5, auto_close=True,
+                font='Ubuntu 11')
+      
+    else:
+      sg.popup('CPF inválido ou campo em branco',  # noqa: F405
+                no_titlebar=True, button_type=5, auto_close=True, 
+                font='Ubuntu 11')
+  except Exception as e:  # noqa: E722
+    print(e)
+    sg.popup('CPF inválido ou campo em branco',  # noqa: F405
+              no_titlebar=True, button_type=5, auto_close=True, 
+              font='Ubuntu 11')
 
 # Definição do método de Gerenciamento: Listar Conta
-def listar_conta(contas):
-  pass
+def listar_contas():
+  try:
+    cursor.execute('SELECT * FROM contas')
+    contas = cursor.fetchall()
+    for conta in contas:
+      script_conta = f"********************************************\n\
+Agência:\t\t      Número da Conta:\n\
+{conta[0]}\t\t         {conta[1]}\n\n\
+CPF:\n{conta[2]}\n\n"
+      print(script_conta)
+  except Exception as erro:
+    sg.popup('Ocorreu o seguinte erro:', erro)  # noqa: F405
 
-# Criação do método de Armazenamento: Banco de dados e Tabela
-# def create_mydb_and_table_defaults():
-#   cursor.execute(
-    
-#     )
-#   mydb.commit()
-
+# Definição do método de Gerenciamento: Cadastrar usuários
 def inserir_usuario(nome, dia, mes, ano, cpf, endereco, senha):
   try:
     # Variáveis de requisitos
@@ -121,12 +169,8 @@ def inserir_usuario(nome, dia, mes, ano, cpf, endereco, senha):
             (nome, dia, mes, ano, cpf, endereco, senha)
         )
       mydb.commit()
-        # 'INSERT INTO usuarios VALUES (nome="'+str(nome)+'", dia="'+str(dia)+'", \
-        #   mes="'+str(mes)+'", ano="'+str(ano)+'", cpf="'+str(cpf)+'", \
-        #     endereco="'+str(endereco)+'", senha="'+str(senha)+'");')
-      #print(query)
       sg.popup(f'Novo usuário inserido com sucesso:\t\t\
-              {nome}, {dia}/{mes}/{ano}, {endereco}',   # noqa: F405
+              {nome},\nNascido: {dia}/{mes}/{ano},\nResidindo no(a): {endereco}',   # noqa: F405
               text_color='Black', background_color='White', button_type=5, 
               no_titlebar=True, font='Ubuntu 13 bold', auto_close=5)
 
@@ -138,8 +182,7 @@ def inserir_usuario(nome, dia, mes, ano, cpf, endereco, senha):
   except mysql.connector.Error as e:
     print(e)
   
-#TODO: Verificação se existe o usuario e o cpf dentro do banco de dados.
-#FIXME: Onde será chamada? Login? Por quem? ADMIN?
+# Lista os usuários e o cpf's existentes do banco de dados.
 def listar_usuarios():
   try:
     cursor.execute("USE myfirstdb")
@@ -153,6 +196,5 @@ CPF:\n{u[4]}\n\n\
 Endereço:\n{u[5]}\n\n\
 Senha:\n{u[6]}\n\n"
       print(script)
-    # print(usuarios)  # noqa: F405
   except mysql.connector.Error as e:
     print(e)

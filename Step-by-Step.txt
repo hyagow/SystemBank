@@ -22,20 +22,32 @@ Problema com método sacar: não está limitando os saques;
  penso em deixar o código padronizado em um só arquivo estruturado da 
  seguinte maneira:
  importação > banco de dados > interface gráfica > variáveis > métodos > main
- porém insisto em tentar resolver o código na estrutura atual. (in progress)
+ porém insisto em tentar resolver o código na estrutura atual. (resolved)
 
- -> Status: Em andamento.
+ -> Status: Concluído.
 _______________________________________________________________________________
 Listar os usuários que estão cadastrados;
  - Criei uma função de listar clientes. (checked)
+
+ 
  -> Status: Concluído.
 _______________________________________________________________________________
 Inserir as contas que forem cadastradas vinculada a cada usuário;
- - 
+ - Capturar o cpf informado. (checked)
+ - Verificar se o cpf está cadastrado no banco de dados. (checked)
+ - Identificar o usuário. (checked)
+ - Registrar dentro do banco de dados a vinculação para ele. (checked)
+
+ -> Status (Concluído).
 _______________________________________________________________________________
 Listar as contas que estão cadastradas;
- - 
+ -> Status (Concluído).
 _______________________________________________________________________________
 Limitar acesso ao sistema com cada usuário cadastrado no banco de dados;
+ -> Status (Concluído).
+_______________________________________________________________________________
+Gerar um extrato específico para cada usuário;
  - 
+
+ -> Status (In progress).
 _______________________________________________________________________________
