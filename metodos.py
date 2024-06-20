@@ -84,7 +84,7 @@ def exibir_extrato(saldo, /, *, extrato):
   print("=============================")
 
 # Definição do método de Gerenciamento: Criar Conta
-def criar_conta(agencia, numero_conta, cpf_account):
+def criar_conta(agencia, cpf_account):
   try:
     if cpf_account and int(cpf_account):
       cursor.execute("select * from usuarios")
@@ -92,7 +92,7 @@ def criar_conta(agencia, numero_conta, cpf_account):
       for dado in dados:
         if dado[4] == cpf_account:
           try:
-            print(dado[4])
+            # print(dado[4])
             cursor.execute("use myfirstdb")
             cursor.execute(
               "create table if not exists contas (agencia varchar(4),\
@@ -101,19 +101,21 @@ def criar_conta(agencia, numero_conta, cpf_account):
                   primary key(numero_conta)) default charset = utf8mb4"
               )
             cursor.execute(
-              "insert into contas values (%s, %s, %s)",
-              (agencia, numero_conta, cpf_account))
+              "insert into contas (agencia, cpf_account) values (%s, %s)",
+              (agencia, cpf_account))
+            cursor.execute("select * from contas")
+            numero_contas = cursor.fetchall()
+            numero_conta = numero_contas[-1][1]
             mydb.commit()
-            sg.popup("Conta criada com sucesso:", agencia,  # noqa: F405
-                     numero_conta, cpf_account)
+            sg.popup("Conta criada com sucesso:", agencia, numero_conta, cpf_account)  # noqa: F405
           except Exception as erro:
             sg.popup('Ocorreu o seguinte erro:', erro,  # noqa: F405
                      no_titlebar=True, button_type=5, auto_close=True, 
                      font='Ubuntu 11')
-      else:
-        sg.popup('CPF não cadastrado, verifique novamente.',  # noqa: F405
-                no_titlebar=True, button_type=5, auto_close=True,
-                font='Ubuntu 11')
+        else:
+          sg.popup('CPF não cadastrado, verifique novamente.',  # noqa: F405
+                  no_titlebar=True, button_type=5, auto_close=True,
+                  font='Ubuntu 11')
       
     else:
       sg.popup('CPF inválido ou campo em branco',  # noqa: F405

@@ -51,3 +51,8 @@ Gerar um extrato específico para cada usuário;
 
  -> Status (In progress).
 _______________________________________________________________________________
+Separar e agregar as funções a uma classe categorizada: (Is here)
+ - 
+
+ -> Status (In progress).
+_______________________________________________________________________________

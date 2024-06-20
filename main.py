@@ -4,7 +4,7 @@ from interface_grafica import *  # noqa: F403
 from metodos import *  # noqa: F403
 
 
-# Janela de inicialização do programa 
+# Janela de inicialização do programa
 initial_window()  # noqa: F405
 while True:
   window, events, values = sg.read_all_windows()  # noqa: F405
@@ -190,7 +190,6 @@ while True:
 
         AGENCIA = "0001"
         numero_conta = 0
-        # contas = []
 
         # Laço de eventos da janela de gerar conta bancária
         while True:
@@ -199,8 +198,8 @@ while True:
 
           if events == "GERAR":
               try:
-                numero_conta += 1
-                criar_conta(AGENCIA, numero_conta, cpf_account)  # noqa: F405
+                # numero_conta += 1
+                criar_conta(AGENCIA, cpf_account)  # noqa: F405
               except Exception as erro:
                 print(erro)
                 
