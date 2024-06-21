@@ -33,7 +33,7 @@ while True:
 
           if senha == senhas[0][0]:
             print(f'senhas: {senhas[0][0]}')
-            sg.popup(f"Bem vindo!\n\t{usuario.title()}",  # noqa: F405
+            sg.popup(f"Bem vindo!\n\t{usuario.title()}",
                   font='Ubuntu 13 bold', auto_close=True, no_titlebar=True, 
                   button_type=5, background_color="#fff", text_color="#333")
           

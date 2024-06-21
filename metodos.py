@@ -1,6 +1,6 @@
 # type: ignore
-from interface_grafica import *  # noqa: F403
 import mysql.connector
+from interface_grafica import *  # noqa: F403
 from datetime import datetime  # noqa: F401
 
 # Conectando ao banco de dados MySQL
@@ -24,6 +24,14 @@ cursor.execute(
         endereco varchar(30), senha varchar(64), contas int not null auto_increment, \
         primary key(contas)) default charset = utf8mb4'
 )
+
+def verificar_logins(login, senha):
+  cursor.execute(f'SELECT senha FROM usuarios WHERER usuario = {login}')
+  senhas = cursor.fetchall()
+  if senha == senhas[0][0]:
+    sg.popup(f"Bem vindo!\n\t{usuario[0]}",  # noqa: F405
+              font='Ubuntu 13 bold', auto_close=True, no_titlebar=True, 
+                  button_type=5, background_color="#fff", text_color="#333")
 
 # Definição do método de Transação: Depositar
 def depositar(saldo, valor_depositar, extrato, /):
