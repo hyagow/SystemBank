@@ -165,11 +165,8 @@ def inserir_usuario(nome, dia, mes, ano, cpf, endereco, senha):
       and len(ano) == requisito_char_ano \
       and len(cpf) == requisito_char_cpf:
       cursor.execute('USE myfirstdb')
-      cursor.execute(
-        "INSERT INTO usuarios (nome, dia, mes, ano, cpf, endereco, senha) \
-          VALUES (%s, %s, %s, %s, %s, %s, %s)", \
-            (nome, dia, mes, ano, cpf, endereco, senha)
-        )
+      cursor.execute("INSERT INTO usuarios (nome, dia, mes, ano, cpf, endereco, senha) \
+          VALUES (?, ?, ?, ?, ?, ?, ?)", (nome, dia, mes, ano, cpf, endereco, senha))
       mydb.commit()
       sg.popup(f'Novo usuário inserido com sucesso:\t\t\
               {nome},\nNascido: {dia}/{mes}/{ano},\nResidindo no(a): {endereco}',   # noqa: F405

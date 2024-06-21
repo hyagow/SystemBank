@@ -31,7 +31,7 @@ while True:
           usuario = values['user'].strip()
           senha = values['pwd'].strip()
 
-          cursor.execute(f"SELECT senha FROM usuarios WHERE nome = '{usuario}'")
+          cursor.execute("SELECT senha FROM usuarios WHERE nome=?", (usuario,))
           senhas = cursor.fetchall()
 
           if senha == senhas[0][0]:
