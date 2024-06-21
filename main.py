@@ -2,7 +2,7 @@
 # Importando métodos das funcionalidades da interface gráfica.py
 from interface_grafica import initial_window, login_window, new_user_window, transfers_window,\
   list_of_users, gerator_of_account_bank, sg
-from metodos import depositar, saque, exibir_extrato, criar_conta, listar_contas, listar_usuarios, \
+from metodos import depositar, saque, exibir_extrato, criar_conta, listar_contas, listar_usuarios,\
   inserir_usuario, cursor
 
 # Janela de inicialização do programa
@@ -32,7 +32,6 @@ while True:
           senhas = cursor.fetchall()
 
           if senha == senhas[0][0]:
-            print(f'senhas: {senhas[0][0]}')
             sg.popup(f"Bem vindo!\n\t{usuario.title()}",
                   font='Ubuntu 13 bold', auto_close=True, no_titlebar=True, 
                   button_type=5, background_color="#fff", text_color="#333")

@@ -25,14 +25,6 @@ cursor.execute(
         primary key(contas)) default charset = utf8mb4'
 )
 
-def verificar_logins(login, senha):
-  cursor.execute(f'SELECT senha FROM usuarios WHERER usuario = {login}')
-  senhas = cursor.fetchall()
-  if senha == senhas[0][0]:
-    sg.popup(f"Bem vindo!\n\t{usuario[0]}",  # noqa: F405
-              font='Ubuntu 13 bold', auto_close=True, no_titlebar=True, 
-                  button_type=5, background_color="#fff", text_color="#333")
-
 # Definição do método de Transação: Depositar
 def depositar(saldo, valor_depositar, extrato, /):
   if valor_depositar > 0:
