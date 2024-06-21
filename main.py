@@ -5,10 +5,13 @@ from interface_grafica import initial_window, login_window, new_user_window, tra
 from metodos import depositar, saque, exibir_extrato, criar_conta, listar_contas, listar_usuarios,\
   inserir_usuario, cursor
 
+
 # Janela de inicialização do programa
 initial_window()
+
 while True:
   window, events, values = sg.read_all_windows()
+
   if events == sg.WINDOW_CLOSED:
     break
   
@@ -65,8 +68,7 @@ while True:
 
                 except Exception as e:
                   print(e)
-                  sg.popup("Algo deu errado!\n" 
-                          "Verifique se está pressionando o botão correto. \
+                  sg.popup("Algo deu errado! Verifique se está pressionando o botão correto.\
                           Este campo só aceita números.", font= "Ubuntu 11 bold", 
                           auto_close=True, no_titlebar=True, button_type=5, 
                           background_color="#fff", text_color="#333")
@@ -111,6 +113,7 @@ while True:
                         "Por favor selecione novamente a operação desejada.",
                         font= "Arial 13 bold", auto_close=True, no_titlebar=True, 
                         button_type=5, background_color="#fff", text_color="#333")
+                
         except Exception as e:
           print(e)
           sg.popup("Algo deu errado!\n"
@@ -144,8 +147,7 @@ while True:
         window["senha"].update('')
         window["nome"].set_focus()
 
-        # Limpando os espaços vazios da direita e da esquerda dos # campos de
-        # inserção
+        # Limpando os espaços vazios da direita e da esquerda dos # campos de inserção
         nome = values["nome"].strip()
         dia = values["dia"].strip()
         mes = values["mes"].strip()
@@ -157,7 +159,6 @@ while True:
         # Função para cadastrar novos usuários
         inserir_usuario(nome, dia, mes, ano, cpf, endereco, senha)
 
-  
       # Chamando janela da lista de usuários
       elif events == "LISTAR USUÁRIOS":
         list_of_users()
@@ -187,7 +188,6 @@ while True:
             window.close()
             break
 
-
       # Chamando janela de gerar conta bancária
       elif events == "GERAR CONTA":
         gerator_of_account_bank()
@@ -213,7 +213,6 @@ while True:
             window.close()
             break
 
-          
       # Eventos para retornar a interface de inicialização
       elif events == sg.WINDOW_CLOSED or "VOLTAR":
         initial_window()
