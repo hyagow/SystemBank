@@ -2,6 +2,7 @@
 import mysql.connector
 from interface_grafica import *  # noqa: F403
 from datetime import datetime  # noqa: F401
+from modulos import sg
 
 # Conectando ao banco de dados MySQL
 mydb = mysql.connector.connect(
@@ -92,7 +93,6 @@ def criar_conta(agencia, cpf_account):
       for dado in dados:
         if dado[4] == cpf_account:
           try:
-            # print(dado[4])
             cursor.execute("use myfirstdb")
             cursor.execute(
               "create table if not exists contas (agencia varchar(4),\
@@ -101,29 +101,29 @@ def criar_conta(agencia, cpf_account):
                   primary key(numero_conta)) default charset = utf8mb4"
               )
             cursor.execute(
-              "insert into contas (agencia, cpf_account) values (%s, %s)",
+              "insert into contas (agencia, cpf_account) values (?, ?)",
               (agencia, cpf_account))
             cursor.execute("select * from contas")
             numero_contas = cursor.fetchall()
             numero_conta = numero_contas[-1][1]
             mydb.commit()
-            sg.popup("Conta criada com sucesso:", agencia, numero_conta, cpf_account)  # noqa: F405
+            sg.popup("Conta criada com sucesso:", agencia, numero_conta, cpf_account)
           except Exception as erro:
-            sg.popup('Ocorreu o seguinte erro:', erro,  # noqa: F405
+            sg.popup('Ocorreu o seguinte erro:', erro,
                      no_titlebar=True, button_type=5, auto_close=True, 
                      font='Ubuntu 11')
         else:
-          sg.popup('CPF não cadastrado, verifique novamente.',  # noqa: F405
+          sg.popup('CPF não cadastrado, verifique novamente.',
                   no_titlebar=True, button_type=5, auto_close=True,
                   font='Ubuntu 11')
       
     else:
-      sg.popup('CPF inválido ou campo em branco',  # noqa: F405
+      sg.popup('CPF inválido ou campo em branco',
                 no_titlebar=True, button_type=5, auto_close=True, 
                 font='Ubuntu 11')
-  except Exception as e:  # noqa: E722
+  except Exception as e:
     print(e)
-    sg.popup('CPF inválido ou campo em branco',  # noqa: F405
+    sg.popup('CPF inválido ou campo em branco',
               no_titlebar=True, button_type=5, auto_close=True, 
               font='Ubuntu 11')
 
