@@ -68,7 +68,7 @@ while True:
 
                 except Exception as e:
                   print(e)
-                  sg.popup("Algo deu errado! Verifique se está pressionando o botão correto.\
+                  sg.popup("Algo deu errado! Verifique se pressionou o botão correto.\
                           Este campo só aceita números.", font= "Ubuntu 11 bold", 
                           auto_close=True, no_titlebar=True, button_type=5, 
                           background_color="#fff", text_color="#333")
